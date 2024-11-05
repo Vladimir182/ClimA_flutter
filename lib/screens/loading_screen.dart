@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:geolocator/geolocator.dart';
+import '../services/location.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
@@ -10,31 +10,31 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  Future<void> getLocation() async {
-    LocationSettings locationSettings = const LocationSettings(
-      accuracy: LocationAccuracy.low,
-      distanceFilter: 1000,
-    );
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getLocation();
+  }
 
-    LocationPermission permission = await Geolocator.requestPermission();
-    Position position =
-        await Geolocator.getCurrentPosition(locationSettings: locationSettings);
-    print(position);
-    print(permission);
+  Future<void> getLocation() async {
+    Location location = Location();
+    await location.getCurrentLocation();
+    print('Широта: ${location.latitude}, Довгота: ${location.longitude}');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            getLocation();
-            print('CLick');
-          },
-          child: const Text('Get Location'),
-        ),
-      ),
-    );
+    print('build done');
+    return const Scaffold(
+        // body: Center(
+        //   child: ElevatedButton(
+        //     onPressed: () {
+        //       getLocation();
+        //     },
+        //     child: const Text('Get Location'),
+        //   ),
+        // ),
+        );
   }
 }
