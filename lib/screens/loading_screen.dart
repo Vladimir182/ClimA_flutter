@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../services/location.dart';
 import '../services/networking.dart';
+import 'location_screen.dart';
 
 const apiKey = '29823b40489a1a0d5ae3825f53662c9b';
 
@@ -36,20 +36,31 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
     var weatherData = await networkHelper.getData();
     print(weatherData);
+
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const LocationScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    print('build done');
     return const Scaffold(
-        // body: Center(
-        //   child: ElevatedButton(
-        //     onPressed: () {
-        //       getLocation();
-        //     },
-        //     child: const Text('Get Location'),
-        //   ),
-        // ),
-        );
+      body: Center(
+        child: SpinKitCircle(
+          color: Colors.white,
+          size: 100.0,
+        ),
+      ),
+    );
   }
 }
